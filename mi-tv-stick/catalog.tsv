@@ -1,0 +1,28 @@
+# catégorie	paquet	description	note
+# Catégories : PUB, TELEMETRIE, INUTILE (désactivables), UTILE (ne se désactive qu'avec ton accord explicite).
+# Seuls les paquets réellement présents sur ta clé sont proposés. Les paquets critiques (lib.sh) sont toujours refusés.
+PUB	com.google.android.tvrecommendations	Contenus sponsorisés / recommandations du lanceur d'origine	Sans effet visible une fois Projectivy en place
+PUB	com.google.android.leanbacklauncher.recommendations	Recommandations (anciennes versions du lanceur)	
+PUB	com.google.android.apps.tv.launcherx.recommendations	Recommandations Google TV (si présent)	
+TELEMETRIE	com.google.android.feedback	Envoi de rapports de plantage / feedback à Google	
+TELEMETRIE	com.android.traceur	Traçage système (outil développeur)	
+TELEMETRIE	com.google.android.tv.bugreportsender	Envoi de rapports de bug (si présent)	
+INUTILE	com.google.android.play.games	Google Play Jeux	
+INUTILE	com.google.android.videos	Google Play Films (ancienne appli vidéo)	
+INUTILE	com.android.printspooler	Service d'impression (inutile sur une télé)	
+INUTILE	com.android.bips	Impression par défaut (si présent)	
+INUTILE	com.google.android.marvin.talkback	TalkBack (lecteur d'écran, accessibilité)	À garder si tu en as besoin
+INUTILE	com.android.dreams.basic	Économiseur d'écran « Couleurs »	
+INUTILE	com.google.android.tvtutorials	Tutoriels Android TV (si présent)	
+UTILE	com.google.android.katniss	Appli Google : recherche et Assistant vocal (bouton micro)	Le micro de la télécommande ne marchera plus
+UTILE	com.google.android.speech.pumpkin	Reconnaissance vocale hors ligne	Lié au micro
+UTILE	com.google.android.apps.mediashell	Chromecast intégré (caster depuis le téléphone)	
+UTILE	com.google.android.backdrop	Mode Ambiant (économiseur photos)	Une alternative plus légère est l'économiseur « Couleurs »
+UTILE	com.google.android.tts	Synthèse vocale Google	
+UTILE	com.google.android.youtube.tv	YouTube	
+UTILE	com.google.android.youtube.tvmusic	YouTube Music	
+UTILE	com.netflix.ninja	Netflix	
+UTILE	com.amazon.amazonvideo.livingroom	Prime Video	
+UTILE	com.disney.disneyplus	Disney+	
+UTILE	com.spotify.tv.android	Spotify	
+UTILE	com.google.android.tv	Chaînes en direct (Live Channels)	

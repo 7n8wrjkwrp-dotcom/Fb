@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Faux adb qui simule une clé Android TV (état dans $MOCK_DIR) pour tester les scripts sans appareil.
+set -euo pipefail
+D="${MOCK_DIR:?}"; P="$D/packages.tsv"   # paquet<TAB>actif(1/0)<TAB>installé(1/0)<TAB>système(1/0)
+[ "${1:-}" = "-s" ] && shift 2
+cmd="${1:-}"; shift || true
+setcol() { awk -F'\t' -v OFS='\t' -v p="$1" -v c="$2" -v v="$3" '$1==p{$c=v}1' "$P" > "$P.tmp" && mv "$P.tmp" "$P"; }
+case "$cmd" in
+  version) echo "Android Debug Bridge version 1.0.41 (mock)";;
+  get-state) echo device;;
+  connect) echo "connected to $1";;
+  exec-out) printf '\x89PNG\r\n\x1a\nmock';;
+  push) echo "$1" >> "$D/pushed";;
+  install) printf 'com.spocky.projengmenu\t1\t1\t0\n' >> "$P"; echo Success;;
+  uninstall) awk -F'\t' -v p="$1" '$1!=p' "$P" > "$P.tmp" && mv "$P.tmp" "$P"; echo Success;;
+  shell)
+    set -- $*
+    case "$1 ${2:-}" in
+      "pm list")
+        [ "$2" = "users" ] && { echo "Users:"; echo "  UserInfo{0:Owner:13} running"; exit 0; }
+        f="${4:-}"; case "$f" in --show-versioncode|-f) f="";; esac
+        awk -F'\t' -v f="$f" '
+          f=="-u" || (f=="" && $3==1) || (f=="-e" && $3==1 && $2==1) || (f=="-d" && $3==1 && $2==0) ||
+          (f=="-s" && $3==1 && $4==1) || (f=="-3" && $3==1 && $4==0) {print "package:" $1}' "$P";;
+      "pm disable-user") setcol "$5" 2 0; echo "Package $5 new state: disabled-user";;
+      "pm enable") p="${!#}"; setcol "$p" 2 1; echo "Package $p new state: enabled";;
+      "cmd package")
+        case "$3" in
+          install-existing) setcol "$4" 3 1;;
+          set-home-activity) echo "$4" > "$D/home"; echo Success;;
+          resolve-activity) echo "priority=0 preferredOrder=0 match=0x108000 isDefault=true"; h="$(cat "$D/home")"
+                            pk="${h%%/*}"; if awk -F'\t' -v p="$pk" '$1==p && $2==1 && $3==1{f=1} END{exit !f}' "$P"; then echo "$h"; else echo "com.android.tv.settings/.FallbackHome"; fi;;
+          query-activities) echo "com.google.android.tvlauncher/.MainActivity"
+                            grep -q '^com.spocky.projengmenu	' "$P" && echo "com.spocky.projengmenu/.ui.home.MainActivity" || true;;
+        esac;;
+      "settings list") cat "$D/settings-$3" 2>/dev/null || true;;
+      "settings get") v="$(grep "^$4=" "$D/settings-$3" 2>/dev/null | cut -d= -f2- || true)"; echo "${v:-null}";;
+      "settings put") grep -v "^$4=" "$D/settings-$3" > "$D/s.tmp" 2>/dev/null || true; echo "$4=$5" >> "$D/s.tmp"; mv "$D/s.tmp" "$D/settings-$3";;
+      "settings delete") grep -v "^$4=" "$D/settings-$3" > "$D/s.tmp" || true; mv "$D/s.tmp" "$D/settings-$3";;
+      "getprop "*) [ -n "${2:-}" ] && echo "MOCK" || echo "[ro.product.model]: [MiTV-MOCK]";;
+      "ls "*) wc -l < "$D/pushed" | xargs seq 1;;
+      *) :;;   # input, am, dumpsys, mkdir… : sans effet
+    esac;;
+  *) :;;
+esac
