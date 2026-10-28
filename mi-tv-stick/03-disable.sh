@@ -34,6 +34,7 @@ info "Paquets validés :"; sed 's/^/  - /' "$APPROVED"
 FAIL=0
 while read -r pkg; do
   if is_critical "$pkg"; then echo "  ⛔ $pkg refusé : paquet critique pour la stabilité."; continue; fi
+  if is_favorite "$pkg"; then echo "  ⭐ $pkg refusé : appli favorite (favorites.tsv)."; continue; fi
   if ! pkg_installed "$pkg"; then echo "  ⚠️  $pkg absent, ignoré."; continue; fi
   if pkg_disabled "$pkg"; then echo "  ✔ $pkg déjà désactivé."; continue; fi
   if [ "$DRY" = 1 ]; then echo "  (simulation) pm disable-user --user 0 $pkg"; continue; fi

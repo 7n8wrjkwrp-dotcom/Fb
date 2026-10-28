@@ -12,6 +12,7 @@ grep -v '^#' "$ROOT/catalog.tsv" | while IFS='	' read -r cat pkg desc note; do
   [ -n "${pkg:-}" ] || continue
   grep -Fxq "$pkg" "$INSTALLED" || continue
   is_critical "$pkg" && continue
+  is_favorite "$pkg" && continue
   if grep -Fxq "$pkg" "$ENABLED"; then st="actif"; else st="déjà désactivé"; fi
   printf '%s\t%s\t%s\t%s\t%s\n' "$cat" "$pkg" "$desc" "$st" "${note:-}" >> "$OUT"
 done
@@ -19,6 +20,7 @@ done
 # Applis Xiaomi / MiTV : pas de description fiable d'avance, on les examine ensemble.
 grep -E '^com\.(xiaomi|mitv|mi|miui)\.' "$INSTALLED" | while read -r pkg; do
   is_critical "$pkg" && continue
+  is_favorite "$pkg" && continue
   grep -q "	$pkg	" "$OUT" && continue
   if grep -Fxq "$pkg" "$ENABLED"; then st="actif"; else st="déjà désactivé"; fi
   printf 'XIAOMI\t%s\t%s\t%s\t%s\n' "$pkg" "Appli Xiaomi (rôle à vérifier)" "$st" "Probables pubs/services fabricant" >> "$OUT"
@@ -39,7 +41,7 @@ done
 
 echo; echo "🔍 Autres applis non répertoriées (pour info, non proposées automatiquement) :"
 comm -23 "$ENABLED" <(cut -f2 "$OUT" | sort -u) | while read -r pkg; do
-  is_critical "$pkg" || echo "  $pkg"
+  is_critical "$pkg" || is_favorite "$pkg" || echo "  $pkg"
 done | grep -Ev '^  com\.android\.(cts|wallpaper|backup|sharedstorage|dynsystem|localtransport|proxyhandler|vpndialogs|certinstaller|carrierdefaultapp|companiondevicemanager|statementservice|egg|pacprocessor|mtp|calllogbackup|emergency|smspush)' || true
 echo; echo "Liste enregistrée : $OUT"
 log_action "candidates $(wc -l < "$OUT" | tr -d ' ') entrées"

@@ -1,0 +1,16 @@
+# ordre	nom	regex sur le nom de paquet	paquet Play Store (vide = hors Play Store ou à confirmer)
+# Ces applis sont PROTÉGÉES : jamais proposées ni acceptées à la désactivation.
+1	YouTube	^com\.google\.android\.youtube\.tv$	com.google.android.youtube.tv
+2	SmartTube Beta	^com\.liskovsoft\.smarttubetv	
+3	Netflix	^com\.netflix\.ninja$	com.netflix.ninja
+4	Prime Video	^com\.amazon\.amazonvideo\.livingroom$	com.amazon.amazonvideo.livingroom
+5	Paramount+	^com\.cbs\.ott$	com.cbs.ott
+6	Crunchyroll	^com\.crunchyroll\.	com.crunchyroll.crunchyroid
+7	Spotify	^com\.spotify\.	com.spotify.tv.android
+8	Twitch	^tv\.twitch\.	tv.twitch.android.app
+9	Kick	kick	
+10	King365 TV Box V4	king	
+11	King365 TV Box V2	king	
+12	Navigateur web	browser|tvbro|webbrowser|puffin|chrome|firefox|opera	
+13	Downloader	^com\.esaba\.downloader$	com.esaba.downloader
+14	Play Store	^com\.android\.vending$	

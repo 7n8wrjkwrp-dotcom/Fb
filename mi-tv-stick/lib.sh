@@ -78,3 +78,19 @@ settings_put_tracked() {
   sh_ settings put "$ns" "$key" "$val" >/dev/null
   log_action "settings put $ns $key $val"
 }
+
+# Applis favorites (favorites.tsv) : protégées contre toute désactivation.
+is_favorite() {
+  local re
+  for re in $(grep -v '^#' "$ROOT/favorites.tsv" | cut -f3); do
+    echo "$1" | grep -Eqi "$re" && return 0
+  done
+  return 1
+}
+
+# Paquets ayant une icône sur l'accueil (applis TV et applis classiques)
+launchable_pkgs() {
+  { sh_ cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.LEANBACK_LAUNCHER
+    sh_ cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
+  } | grep '/' | cut -d/ -f1 | sort -u
+}

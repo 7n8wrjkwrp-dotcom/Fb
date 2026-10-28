@@ -11,6 +11,7 @@ Ils ne **désinstallent rien** : on utilise seulement `pm disable-user` et des r
 | 4 | `./03-disable.sh` | Te pose une question par appli (réponse par défaut : **non**). Les applis critiques sont toujours refusées |
 | 5a | `./04-launcher.sh` | Installe Projectivy Launcher depuis le Play Store de la télé et en fait l'écran d'accueil |
 | 5b | `./05-wallpapers.sh --photos DOSSIER` ou `--commons` | Envoie des fonds d'écran foot (tes photos, ou photos libres de Wikimedia Commons avec `CREDITS.txt`) |
+| 5c | `./06-favorites.sh` | Retrouve tes applis favorites sur la clé, donne l'ordre du dock et propose d'ouvrir la page Play Store de celles qui manquent |
 | 6 | `./restore.sh [--dry-run]` | Remet l'état de la sauvegarde de référence et vérifie |
 
 Chaque étape fait une capture de la télé dans `state/shots/` (ou dans `state/backup-*/shots/` pour la sauvegarde).
@@ -20,6 +21,12 @@ Chaque étape fait une capture de la télé dans `state/shots/` (ou dans `state/
 - Liste noire codée en dur dans `lib.sh` : services Google Play, Play Store, interface système, paramètres, assistant de configuration, service de la télécommande, clavier, pilotes Amlogic, etc. Ces paquets ne sont jamais désactivés, même s'ils figurent dans une liste fournie.
 - Les applis classées « ⭐ utile » (micro et Assistant, Chromecast, YouTube, Netflix…) demandent un accord séparé, avec un avertissement.
 - **Action risquée, à part** : `./04-launcher.sh --disable-stock-launcher` désactive le lanceur d'origine. Le script refuse si Projectivy n'est pas l'accueil actuel, puis demande de taper `OUI`. N'y recours que si le bouton Home revient encore à l'ancien lanceur.
+
+## Applis favorites (protégées)
+Listées dans `favorites.tsv`. Aucun script ne les propose ni ne les désactive.
+Ordre du dock : **YouTube · SmartTube Beta · Netflix · Prime Video · Paramount+ · Crunchyroll · Spotify · Twitch · Kick · King365 V4 · King365 V2 · Navigateur web · Downloader · Play Store**.
+La première ligne visible (6 icônes) regroupe la vidéo, comme sur Apple TV. Les outils (navigateur, Downloader, Play Store) sont rangés à la fin.
+SmartTube, Kick et King365 ne viennent pas du Play Store : le script les cherche seulement s'ils sont déjà installés et ne télécharge aucun APK.
 
 ## Configurer Projectivy façon Apple TV (sur la télé, avec la télécommande)
 1. Dans les réglages de Projectivy, active l'option qui remplace le lanceur actuel (« Override current launcher »), pour que le bouton Home ouvre Projectivy.
