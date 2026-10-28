@@ -11,6 +11,6 @@
 9	Kick	kick	
 10	King365 TV Box V4	king	
 11	King365 TV Box V2	king	
-12	Navigateur web	browser|tvbro|webbrowser|puffin|chrome|firefox|opera	
+12	Navigateur web (BrowseHere)	browsehere|browser|tvbro|webbrowser|puffin|chrome|firefox|opera	
 13	Downloader	^com\.esaba\.downloader$	com.esaba.downloader
 14	Play Store	^com\.android\.vending$	
